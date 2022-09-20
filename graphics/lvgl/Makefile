@@ -31,14 +31,7 @@ CFLAGS += -Wno-format
 
 # LVGL Libraries
 
--include ./lvgl/src/lv_core/lv_core.mk
--include ./lvgl/src/lv_hal/lv_hal.mk
--include ./lvgl/src/lv_widgets/lv_widgets.mk
--include ./lvgl/src/lv_font/lv_font.mk
--include ./lvgl/src/lv_misc/lv_misc.mk
--include ./lvgl/src/lv_themes/lv_themes.mk
--include ./lvgl/src/lv_draw/lv_draw.mk
--include ./lvgl/src/lv_gpu/lv_gpu.mk
+-include ./lvgl/lvgl.mk
 
 CSRCS += lv_tick_interface.c
 
