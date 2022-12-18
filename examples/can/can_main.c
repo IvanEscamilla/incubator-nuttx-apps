@@ -298,9 +298,9 @@ int main(int argc, FAR char *argv[])
    */
 
 #ifdef CONFIG_EXAMPLES_CAN_WRITE
-  msgdlc  = 1;
-  msgid   = minid;
-  msgdata = 0;
+  msgdlc  = 8;
+  msgid   = 0x3BF;
+  msgdata = 0x1;
 #endif
 
   for (msgno = 0; !nmsgs || msgno < nmsgs; msgno++)
@@ -332,9 +332,10 @@ int main(int argc, FAR char *argv[])
         }
 
       /* Send the TX message */
-
+      caninfo("Sending meesage!\n");
       msgsize = CAN_MSGLEN(msgdlc);
       nbytes = write(fd, &txmsg, msgsize);
+      caninfo("message sent!\n");
       if (nbytes != msgsize)
         {
           printf("ERROR: write(%ld) returned %ld\n",
@@ -483,10 +484,12 @@ int main(int argc, FAR char *argv[])
         {
           msgdlc = 1;
         }
+      printf("end loop!");
 #endif
     }
 
 errout_with_dev:
+  printf("Closing can dev errout_with_dev\n");
   close(fd);
 
   printf("Terminating!\n");
