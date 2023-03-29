@@ -1,4 +1,4 @@
-# Kconfig file for LVGL v8.2.0
+# Kconfig file for LVGL v8.3.3
 
 menuconfig GRAPHICS_LVGL
 	bool "Light and Versatile Graphic Library (LVGL)"
@@ -10,7 +10,7 @@ if GRAPHICS_LVGL
     
     config LVGL_VERSION
 	    string "LVGL Version"
-	    default "8.3.2"
+	    default "8.3.3"
 
     # Define CONFIG_LV_CONF_SKIP so we can use LVGL
     # without lv_conf.h file, the lv_conf_internal.h and
