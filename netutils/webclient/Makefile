@@ -23,6 +23,9 @@ include $(APPDIR)/Make.defs
 # Web client library
 
 ifeq ($(CONFIG_NET_TCP),y)
+CFLAGS += ${INCDIR_PREFIX}"$(APPDIR)$(DELIM)..$(DELIM)..$(DELIM)external$(DELIM)include$(DELIM)openssl"
+LDFLAGS+= -L$(APPDIR)$(DELIM)..$(DELIM)..$(DELIM)external -llibexternal
+
 CSRCS = webclient.c
 endif
 

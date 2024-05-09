@@ -1454,10 +1454,11 @@ int cmd_wget(FAR struct nsh_vtbl_s *vtbl, int argc, FAR char **argv)
   fullpath = nsh_getfullpath(vtbl, localfile);
 
   /* Open the local file for writing */
-
-  fd = open(fullpath, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+  syslog(LOG_INFO, "INFO: fullpath::%s:: \n", fullpath);
+  fd = open(fullpath, O_WRONLY | O_CREAT | O_TRUNC, 0777);
   if (fd < 0)
     {
+      syslog(LOG_ERR, "ERROR: unable to open ::%s:: \n", fullpath);
       nsh_error(vtbl, g_fmtcmdfailed, argv[0], "open", NSH_ERRNO);
       ret = ERROR;
       goto exit;

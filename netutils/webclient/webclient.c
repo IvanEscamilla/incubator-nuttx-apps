@@ -73,6 +73,7 @@
 #if defined(CONFIG_WEBCLIENT_NET_LOCAL)
 #include <sys/un.h>
 #endif
+#include <openssl/ssl.h>
 
 #include <nuttx/version.h>
 
@@ -1186,6 +1187,101 @@ int webclient_perform(FAR struct webclient_context *ctx)
   unsigned int i;
   int len;
   int ret;
+  
+  syslog(LOG_INFO, "INFO: Create SSL Context!\n");
+  // Create SSL context
+  SSL_CTX *ssl_ctx = SSL_CTX_new(TLS_client_method());
+
+  if (!ssl_ctx)
+  {
+    syslog(LOG_ERR, "Error: Creating SSL Context!\n");
+  }
+
+  syslog(LOG_INFO, "INFO: Create SSL Socket!\n");
+  // Create socket
+  int sockfd = socket(AF_INET, SOCK_STREAM, 0);
+  if (sockfd == -1)
+  {
+    syslog(LOG_ERR, "Error: Creating SSL Socket!\n");
+  }
+  
+  syslog(LOG_INFO, "INFO: Init WS pointer!\n");
+  ws = calloc(1, sizeof(struct wget_s));
+  if (!ws)
+  {
+    return -errno;
+  }
+  
+  ws->conn = calloc(1, sizeof(struct webclient_conn_s));
+  
+  if (!ws->conn)
+  {
+    free_ws(ws);
+    return -errno;
+  }
+  
+  ws->buffer = ctx->buffer;
+  ws->buflen = ctx->buflen;
+
+  syslog(LOG_INFO, "INFO: Partse URL target!\n");
+
+  ret = parseurl(ctx->url, &ws->target, true);
+  
+  if (ret != 0)
+  {
+
+  }
+
+  syslog(LOG_INFO, "INFO: Form SSL Target!\n");
+
+  struct sockaddr_in ssl_server_in;
+  const struct sockaddr *ssl_server_address;
+  socklen_t ssl_server_address_len;
+  
+  /* Get the server address from the host name */
+  FAR struct wget_target_s *ssl_target;
+  ssl_target = &ws->target;
+  
+  ssl_server_in.sin_family = AF_INET;
+  ssl_server_in.sin_port   = htons(443);
+
+  ret = wget_gethostip(ssl_target->hostname, &ssl_server_in.sin_addr);
+  syslog(LOG_ERR, "scheme='%s' hostname='%s' filename='%s'\n", ssl_target->scheme, ssl_target->hostname, ssl_target->filename);
+  
+  if (ret < 0)
+  {
+    syslog(LOG_ERR, "Error: SSL Resolving host ip!\n");
+  }
+  
+  ssl_server_address = (const struct sockaddr *)&ssl_server_in;
+  ssl_server_address_len = sizeof(struct sockaddr_in);
+
+  syslog(LOG_INFO, "INFO: Connect to host SSL!\n");
+
+  ret = connect(sockfd, ssl_server_address, ssl_server_address_len);
+  
+  if (ret == -1)
+  {
+    syslog(LOG_ERR, "Error: Socket connect!\n");
+  }
+
+  // Create SSL object
+  syslog(LOG_INFO, "INFO: Create SSL object!\n");
+  SSL *ssl = SSL_new(ssl_ctx);
+  if (!ssl)
+  {
+    syslog(LOG_ERR, "Error: SSL New!\n");
+  }
+
+  // Set up SSL connection
+  syslog(LOG_INFO, "INFO: Setup SSL Connection!\n");
+  SSL_set_fd(ssl, sockfd);
+  if (SSL_connect(ssl) <= 0)
+  {
+    syslog(LOG_ERR, "Error: SSL Connection Error!\n");
+  }
+
+  free_ws(ws);
 
 #ifdef CONFIG_DEBUG_ASSERTIONS
   DEBUGASSERT(ctx->state == WEBCLIENT_CONTEXT_STATE_INITIALIZED ||
