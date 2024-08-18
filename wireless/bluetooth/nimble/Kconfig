@@ -216,6 +216,14 @@ config NIMBLE_MSYS_2_BLOCK_SIZE
 
 endmenu # "NimBLE memory configuration"
 
+config NIMBLE_BLE_STORE_CONFIG_PERSIST
+	bool "NimBLE Persist Bound Keys in Non Nolatile Memory"
+	default n
+
+config NIMBLE_BLE_STORE_FLASH_PERSIST
+	bool "NimBLE Persist Bound Keys in Non Nolatile Memory (Flash)"
+	default n
+
 config NIMBLE_PORTING_EXAMPLE
 	bool "Apache NimBLE NuttX porting example"
 	default y

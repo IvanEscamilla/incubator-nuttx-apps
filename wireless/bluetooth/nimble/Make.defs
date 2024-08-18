@@ -20,4 +20,19 @@
 
 ifneq ($(CONFIG_NIMBLE),)
 CONFIGURED_APPS += $(APPDIR)/wireless/bluetooth/nimble
+
+CFLAGS += ${INCDIR_PREFIX}$(APPDIR)/wireless/bluetooth/nimble/include
+CFLAGS += ${INCDIR_PREFIX}$(APPDIR)/wireless/bluetooth/nimble/mynewt-nimble/nimble/include
+CFLAGS += ${INCDIR_PREFIX}$(APPDIR)/wireless/bluetooth/nimble/mynewt-nimble/nimble/host/include
+CFLAGS += ${INCDIR_PREFIX}$(APPDIR)/wireless/bluetooth/nimble/mynewt-nimble/nimble/transport/include
+CFLAGS += ${INCDIR_PREFIX}$(APPDIR)/wireless/bluetooth/nimble/mynewt-nimble/porting/nimble/include
+CFLAGS += ${INCDIR_PREFIX}$(APPDIR)/wireless/bluetooth/nimble/mynewt-nimble/porting/npl/nuttx/include
+
+CXXFLAGS += ${INCDIR_PREFIX}$(APPDIR)/wireless/bluetooth/nimble/include
+CXXFLAGS += ${INCDIR_PREFIX}$(APPDIR)/wireless/bluetooth/nimble/mynewt-nimble/nimble/include
+CXXFLAGS += ${INCDIR_PREFIX}$(APPDIR)/wireless/bluetooth/nimble/mynewt-nimble/nimble/host/include
+CXXFLAGS += ${INCDIR_PREFIX}$(APPDIR)/wireless/bluetooth/nimble/mynewt-nimble/nimble/transport/include
+CXXFLAGS += ${INCDIR_PREFIX}$(APPDIR)/wireless/bluetooth/nimble/mynewt-nimble/porting/nimble/include
+CXXFLAGS += ${INCDIR_PREFIX}$(APPDIR)/wireless/bluetooth/nimble/mynewt-nimble/porting/npl/nuttx/include
+
 endif

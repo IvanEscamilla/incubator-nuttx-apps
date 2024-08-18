@@ -264,6 +264,9 @@ int main(int argc, FAR char *argv[])
 
       fflush(stdout);
 
+      /* wait for voltage to stabilize */
+      up_mdelay(100);
+
 #ifdef CONFIG_EXAMPLES_ADC_SWTRIG
       /* Issue the software trigger to start ADC conversion */
 

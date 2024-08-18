@@ -36,6 +36,12 @@ NIMBLE_IGNORE += $(NIMBLE_ROOT)/porting/nimble/src/hal_timer.c
 NIMBLE_IGNORE += $(NIMBLE_ROOT)/porting/nimble/src/os_cputime.c
 NIMBLE_IGNORE += $(NIMBLE_ROOT)/porting/nimble/src/os_cputime_pwr2.c
 
+# Inlcude custom store files
+
+# Base64 encoding
+#CSRCS += $(APPDIR)/wireless/bluetooth/nimble/port/store/src/ble_store_config.c
+#CSRCS += $(APPDIR)/wireless/bluetooth/nimble/port/store/src/ble_store_config_conf.c
+
 # include NimBLE porting defs
 
 -include $(NIMBLE_ROOT)/porting/nimble/Makefile.defs

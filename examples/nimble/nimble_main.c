@@ -269,22 +269,32 @@ int main(int argc, FAR char *argv[])
   netinit_bringup();
 #endif
 
+  printf("nimble_port_init()\n");
   nimble_port_init();
+  printf("ble_hci_sock_init()\n");
   ble_hci_sock_init();
 
   /* Initialize services */
-
+  printf("ble_svc_gap_init()\n");
   ble_svc_gap_init();
+  printf("ble_svc_gatt_init()\n");
   ble_svc_gatt_init();
+  printf("ble_svc_ans_init()\n");
   ble_svc_ans_init();
+  printf("ble_svc_ias_init()\n");
   ble_svc_ias_init();
+  printf("ble_svc_lls_init()\n");
   ble_svc_lls_init();
+  printf("ble_svc_tps_init()\n");
   ble_svc_tps_init();
+  printf("ble_svc_bas_init()\n");
   ble_svc_bas_init();
+  printf("ble_svc_dis_init()\n");
   ble_svc_dis_init();
 
   /* Create task which handles HCI socket */
 
+  printf("Create task which handles HCI socket...\n");
   ret = ble_npl_task_init(&s_task_hci, "hci_sock", ble_hci_sock_task,
                           NULL, TASK_DEFAULT_PRIORITY, BLE_NPL_TIME_FOREVER,
                           TASK_DEFAULT_STACK, TASK_DEFAULT_STACK_SIZE);
@@ -295,6 +305,7 @@ int main(int argc, FAR char *argv[])
 
   /* Create task which handles default event queue for host stack. */
 
+  printf("Create task which handles default event queue for host stack...\n");
   ret = ble_npl_task_init(&s_task_host, "ble_host", ble_host_task,
                           NULL, TASK_DEFAULT_PRIORITY, BLE_NPL_TIME_FOREVER,
                           TASK_DEFAULT_STACK, TASK_DEFAULT_STACK_SIZE);
@@ -302,6 +313,8 @@ int main(int argc, FAR char *argv[])
     {
       printf("ERROR: starting ble task: %i\n", ret);
     }
+
+  printf("Start simulation of battery notifications...\n");
 
   while (true)
     {
@@ -313,6 +326,7 @@ int main(int argc, FAR char *argv[])
           batt_level = 0;
         }
 
+      printf("Battery level set to %d %%\n", batt_level);
       ble_svc_bas_battery_level_set(batt_level);
 
       sleep(1);
